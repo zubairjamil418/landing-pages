@@ -30,10 +30,6 @@
                         accent: '#3b82f6',
                         glass: 'rgba(255, 255, 255, 0.7)',
                         glassBorder: 'rgba(255, 255, 255, 0.5)',
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'hero-pattern': "url('https://images.unsplash.com/photo-1600596542815-2495db98dada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')",
                     }
                 }
             }
@@ -161,10 +157,10 @@
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <!-- Background Image with Parallax -->
+        <!-- Background Image with Parallax (Lorem Picsum ID 164 is a nice modern interior) -->
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-white/60 to-slate-50 z-10"></div>
-            <img src="https://images.unsplash.com/photo-1600596542815-2495db98dada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+            <img src="https://picsum.photos/id/164/1920/1080" 
                  class="w-full h-full object-cover scale-110" id="hero-bg" alt="Modern Architecture">
         </div>
 
@@ -245,10 +241,10 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Property Card 1 -->
+                <!-- Property Card 1 (ID 193 is a nice modern building) -->
                 <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
                     <div class="relative h-72 img-container">
-                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                        <img src="https://picsum.photos/id/193/800/600" 
                              alt="Modern Villa" class="w-full h-full object-cover">
                         <div class="absolute top-4 left-4">
                             <span class="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-slate-900 rounded-full">For Sale</span>
@@ -282,10 +278,10 @@
                     </div>
                 </div>
 
-                <!-- Property Card 2 -->
+                <!-- Property Card 2 (ID 221 is a nice architectural shot) -->
                 <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
                     <div class="relative h-72 img-container">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                        <img src="https://picsum.photos/id/221/800/600" 
                              alt="Waterfront" class="w-full h-full object-cover">
                         <div class="absolute top-4 left-4">
                             <span class="px-3 py-1 bg-blue-600/90 backdrop-blur text-xs font-bold text-white rounded-full">For Rent</span>
@@ -319,10 +315,10 @@
                     </div>
                 </div>
 
-                <!-- Property Card 3 -->
+                <!-- Property Card 3 (ID 192 is a modern interior) -->
                 <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
                     <div class="relative h-72 img-container">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                        <img src="https://picsum.photos/id/192/800/600" 
                              alt="Penthouse" class="w-full h-full object-cover">
                         <div class="absolute top-4 left-4">
                             <span class="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-slate-900 rounded-full">For Sale</span>
@@ -481,10 +477,11 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 (ID 64 is a nice portrait) -->
                 <div class="glass p-8 rounded-3xl relative testimonial-card">
                     <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
                     <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <img src="https://picsum.photos/id/64/100/100" class="w-12 h-12 rounded-full object-cover" alt="User">
                         <div>
                             <h4 class="font-bold text-slate-900">Sarah Jenkins</h4>
                             <p class="text-xs text-slate-500 uppercase tracking-wide">Home Buyer</p>
@@ -500,10 +497,11 @@
                     </div>
                 </div>
 
+                <!-- Testimonial 2 (ID 65 is a nice portrait) -->
                 <div class="glass p-8 rounded-3xl relative testimonial-card">
                     <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
                     <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <img src="https://picsum.photos/id/65/100/100" class="w-12 h-12 rounded-full object-cover" alt="User">
                         <div>
                             <h4 class="font-bold text-slate-900">Michael Chen</h4>
                             <p class="text-xs text-slate-500 uppercase tracking-wide">Investor</p>
@@ -519,10 +517,11 @@
                     </div>
                 </div>
 
+                <!-- Testimonial 3 (ID 91 is a nice portrait) -->
                 <div class="glass p-8 rounded-3xl relative testimonial-card">
                     <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
                     <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <img src="https://picsum.photos/id/91/100/100" class="w-12 h-12 rounded-full object-cover" alt="User">
                         <div>
                             <h4 class="font-bold text-slate-900">Emma Wilson</h4>
                             <p class="text-xs text-slate-500 uppercase tracking-wide">Tenant</p>
