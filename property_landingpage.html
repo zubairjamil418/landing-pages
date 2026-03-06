@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Estates | Premium Property</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a',
+                        accent: '#3b82f6',
+                        glass: 'rgba(255, 255, 255, 0.7)',
+                        glassBorder: 'rgba(255, 255, 255, 0.5)',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1600596542815-2495db98dada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px 0 rgba(31, 38, 135, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Floating Shapes Animation */
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Text Reveal Effect */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Image Hover Zoom */
+        .img-container {
+            overflow: hidden;
+        }
+        .img-container img {
+            transition: transform 0.7s ease;
+        }
+        .glass-card:hover .img-container img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">L</div>
+                    <span class="text-xl font-bold tracking-tight text-slate-900">Lumina<span class="text-blue-600">.</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#properties" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Properties</a>
+                    <a href="#services" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Services</a>
+                    <a href="#process" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Process</a>
+                    <a href="#about" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">About</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <button class="text-sm font-medium text-slate-600 hover:text-slate-900">Sign In</button>
+                    <button class="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+                        List Property
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Image with Parallax -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-white/60 to-slate-50 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1600596542815-2495db98dada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                 class="w-full h-full object-cover scale-110" id="hero-bg" alt="Modern Architecture">
+        </div>
+
+        <!-- Floating Blobs -->
+        <div class="blob bg-blue-300 w-96 h-96 rounded-full top-20 -left-20 mix-blend-multiply"></div>
+        <div class="blob bg-purple-300 w-96 h-96 rounded-full bottom-20 -right-20 mix-blend-multiply animation-delay-2000"></div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-fade-in-up">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-xs font-semibold tracking-wide uppercase text-slate-600">New Properties Available</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-slate-900 tracking-tight mb-6 leading-tight reveal-text">
+                Find Your <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Next Home</span>
+            </h1>
+
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-10 font-light">
+                Discover a place where modern luxury meets comfort. We curate the finest properties for those who seek the extraordinary.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-3xl mx-auto glass p-2 rounded-2xl shadow-2xl shadow-slate-200/50 flex flex-col md:flex-row gap-2 animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="flex-1 flex items-center px-4 h-14 bg-white/50 rounded-xl border border-white/60 focus-within:bg-white transition-colors">
+                    <i data-lucide="map-pin" class="text-slate-400 w-5 h-5 mr-3"></i>
+                    <input type="text" placeholder="Location (e.g. London, NY)" class="bg-transparent border-none outline-none w-full text-slate-700 placeholder-slate-400">
+                </div>
+                <div class="flex-1 flex items-center px-4 h-14 bg-white/50 rounded-xl border border-white/60 focus-within:bg-white transition-colors">
+                    <i data-lucide="home" class="text-slate-400 w-5 h-5 mr-3"></i>
+                    <select class="bg-transparent border-none outline-none w-full text-slate-700 cursor-pointer appearance-none">
+                        <option>Property Type</option>
+                        <option>Apartment</option>
+                        <option>Villa</option>
+                        <option>Penthouse</option>
+                    </select>
+                </div>
+                <button class="h-14 px-8 bg-slate-900 text-white rounded-xl font-medium hover:bg-blue-600 transition-all hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    Search
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-slate-900 counter" data-target="1200">0</div>
+                    <div class="text-sm text-slate-500 mt-1">Properties</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-slate-900 counter" data-target="850">0</div>
+                    <div class="text-sm text-slate-500 mt-1">Happy Clients</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-slate-900 counter" data-target="15">0</div>
+                    <div class="text-sm text-slate-500 mt-1">Years Exp.</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-slate-900 counter" data-target="24">0</div>
+                    <div class="text-sm text-slate-500 mt-1">Awards Won</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section id="properties" class="py-24 bg-slate-50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div class="max-w-2xl">
+                    <h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-2">Featured Listings</h2>
+                    <h3 class="text-4xl md:text-5xl font-bold text-slate-900">Premium Selection</h3>
+                </div>
+                <a href="#" class="hidden md:flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors mt-4 md:mt-0 group">
+                    View all properties 
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Property Card 1 -->
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
+                    <div class="relative h-72 img-container">
+                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Modern Villa" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-slate-900 rounded-full">For Sale</span>
+                        </div>
+                        <div class="absolute bottom-4 right-4">
+                            <span class="text-2xl font-bold text-white drop-shadow-md">$2.4M</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-slate-900">The Glass Pavilion</h4>
+                            <div class="flex items-center gap-1 text-slate-500 text-sm">
+                                <i data-lucide="star" class="w-3 h-3 fill-yellow-400 text-yellow-400"></i>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-500 text-sm mb-4 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i> Beverly Hills, CA
+                        </p>
+                        <div class="flex items-center gap-4 text-sm text-slate-600 border-t border-slate-200 pt-4">
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4"></i> 5 Beds
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bath" class="w-4 h-4"></i> 4 Baths
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4"></i> 4,200 sqft
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Card 2 -->
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
+                    <div class="relative h-72 img-container">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Waterfront" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-blue-600/90 backdrop-blur text-xs font-bold text-white rounded-full">For Rent</span>
+                        </div>
+                        <div class="absolute bottom-4 right-4">
+                            <span class="text-2xl font-bold text-white drop-shadow-md">$8,500<span class="text-sm font-normal">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-slate-900">Azure Waterfront</h4>
+                            <div class="flex items-center gap-1 text-slate-500 text-sm">
+                                <i data-lucide="star" class="w-3 h-3 fill-yellow-400 text-yellow-400"></i>
+                                <span>5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-500 text-sm mb-4 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i> Miami Beach, FL
+                        </p>
+                        <div class="flex items-center gap-4 text-sm text-slate-600 border-t border-slate-200 pt-4">
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4"></i> 3 Beds
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bath" class="w-4 h-4"></i> 3 Baths
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4"></i> 2,800 sqft
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Card 3 -->
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer property-card">
+                    <div class="relative h-72 img-container">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Penthouse" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-slate-900 rounded-full">For Sale</span>
+                        </div>
+                        <div class="absolute bottom-4 right-4">
+                            <span class="text-2xl font-bold text-white drop-shadow-md">$4.1M</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-xl font-bold text-slate-900">Skyline Penthouse</h4>
+                            <div class="flex items-center gap-1 text-slate-500 text-sm">
+                                <i data-lucide="star" class="w-3 h-3 fill-yellow-400 text-yellow-400"></i>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-500 text-sm mb-4 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i> Manhattan, NY
+                        </p>
+                        <div class="flex items-center gap-4 text-sm text-slate-600 border-t border-slate-200 pt-4">
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4"></i> 4 Beds
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="bath" class="w-4 h-4"></i> 4 Baths
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4"></i> 3,500 sqft
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="#" class="inline-flex items-center gap-2 text-blue-600 font-medium">
+                    View all properties <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-white relative overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-slate-50 rounded-l-[100px] -z-0"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-2">Our Expertise</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Comprehensive Real Estate Services</h3>
+                <p class="text-slate-600 text-lg">We provide end-to-end solutions for all your property needs, ensuring a seamless experience from search to signature.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="group p-8 rounded-3xl bg-white border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 service-card">
+                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="key" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-3">Property Sales</h4>
+                    <p class="text-slate-600 leading-relaxed mb-6">Strategic marketing and negotiation to get the best value for your property in record time.</p>
+                    <a href="#" class="inline-flex items-center text-blue-600 font-semibold group-hover:gap-2 transition-all">
+                        Learn more <i data-lucide="arrow-right" class="w-4 h-4 ml-1 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group p-8 rounded-3xl bg-white border border-slate-100 hover:border-purple-100 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 service-card">
+                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="home" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-3">Premium Lettings</h4>
+                    <p class="text-slate-600 leading-relaxed mb-6">Connecting quality tenants with premium properties through our rigorous vetting process.</p>
+                    <a href="#" class="inline-flex items-center text-purple-600 font-semibold group-hover:gap-2 transition-all">
+                        Learn more <i data-lucide="arrow-right" class="w-4 h-4 ml-1 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group p-8 rounded-3xl bg-white border border-slate-100 hover:border-emerald-100 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 service-card">
+                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="settings" class="w-7 h-7"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-3">Management</h4>
+                    <p class="text-slate-600 leading-relaxed mb-6">Full-service property management handling maintenance, rent collection, and tenant relations.</p>
+                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
+                        Learn more <i data-lucide="arrow-right" class="w-4 h-4 ml-1 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-24 bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-sm font-bold text-blue-400 tracking-widest uppercase mb-2">How It Works</h2>
+                <h3 class="text-4xl md:text-5xl font-bold mb-6">Simple. Seamless. Swift.</h3>
+            </div>
+
+            <div class="relative">
+                <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-800 -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="text-center group process-step">
+                        <div class="w-20 h-20 mx-auto bg-slate-800 rounded-full border-2 border-slate-700 flex items-center justify-center mb-6 group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                            <i data-lucide="search" class="w-8 h-8 text-slate-300 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">1. Search</h4>
+                        <p class="text-slate-400 text-sm">Browse our curated collection of premium listings.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="text-center group process-step">
+                        <div class="w-20 h-20 mx-auto bg-slate-800 rounded-full border-2 border-slate-700 flex items-center justify-center mb-6 group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                            <i data-lucide="calendar" class="w-8 h-8 text-slate-300 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">2. Visit</h4>
+                        <p class="text-slate-400 text-sm">Schedule a private viewing at your convenience.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="text-center group process-step">
+                        <div class="w-20 h-20 mx-auto bg-slate-800 rounded-full border-2 border-slate-700 flex items-center justify-center mb-6 group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                            <i data-lucide="file-text" class="w-8 h-8 text-slate-300 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">3. Offer</h4>
+                        <p class="text-slate-400 text-sm">We handle the negotiation to secure your dream home.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="text-center group process-step">
+                        <div class="w-20 h-20 mx-auto bg-slate-800 rounded-full border-2 border-slate-700 flex items-center justify-center mb-6 group-hover:border-blue-500 group-hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                            <i data-lucide="key-round" class="w-8 h-8 text-slate-300 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">4. Move In</h4>
+                        <p class="text-slate-400 text-sm">Receive the keys and start your new chapter.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-2">Testimonials</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-slate-900">Client Stories</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-8 rounded-3xl relative testimonial-card">
+                    <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <div>
+                            <h4 class="font-bold text-slate-900">Sarah Jenkins</h4>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Home Buyer</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 italic">"The team at Lumina made finding our dream home an absolute pleasure. Their attention to detail is unmatched."</p>
+                    <div class="flex gap-1 mt-4 text-yellow-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-3xl relative testimonial-card">
+                    <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <div>
+                            <h4 class="font-bold text-slate-900">Michael Chen</h4>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Investor</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 italic">"Professional, efficient, and incredibly knowledgeable about the market. Sold my property above asking price."</p>
+                    <div class="flex gap-1 mt-4 text-yellow-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-3xl relative testimonial-card">
+                    <i data-lucide="quote" class="w-10 h-10 text-blue-200 absolute top-6 right-6"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full object-cover" alt="User">
+                        <div>
+                            <h4 class="font-bold text-slate-900">Emma Wilson</h4>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Tenant</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 italic">"The rental process was seamless. The property management team responds to queries within minutes."</p>
+                    <div class="flex gap-1 mt-4 text-yellow-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-700"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">Ready to find your dream home?</h2>
+            <p class="text-blue-100 text-xl mb-10 max-w-2xl mx-auto">Join thousands of satisfied clients who found their perfect property with Lumina.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="px-8 py-4 bg-white text-blue-600 rounded-full font-bold text-lg hover:bg-blue-50 transition-colors shadow-xl">
+                    Browse Properties
+                </button>
+                <button class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white/10 transition-colors">
+                    Contact an Agent
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">L</div>
+                        <span class="text-xl font-bold text-white">Lumina.</span>
+                    </div>
+                    <p class="mb-6">Redefining the real estate experience with technology, transparency, and trust.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6">Properties</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">For Sale</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">For Rent</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">New Developments</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Commercial</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i> 123 Lumina Ave, Suite 100
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i> +1 (555) 000-0000
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i> hello@lumina.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm">&copy; 2024 Lumina Real Estate. All rights reserved.</p>
+                <div class="flex gap-6 text-sm">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass', 'shadow-sm');
+            } else {
+                navbar.classList.remove('glass', 'shadow-sm');
+            }
+        });
+
+        // Hero Parallax
+        gsap.to("#hero-bg", {
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            },
+            y: 100,
+            scale: 1.2
+        });
+
+        // Animate Hero Content on Load
+        gsap.from(".animate-fade-in-up", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out"
+        });
+
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            gsap.to(counter, {
+                scrollTrigger: {
+                    trigger: counter,
+                    start: "top 85%",
+                },
+                innerHTML: target,
+                duration: 2,
+                snap: { innerHTML: 1 },
+                ease: "power2.out"
+            });
+        });
+
+        // Property Cards Stagger Animation
+        gsap.from(".property-card", {
+            scrollTrigger: {
+                trigger: "#properties",
+                start: "top 75%",
+            },
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power3.out"
+        });
+
+        // Services Animation
+        gsap.from(".service-card", {
+            scrollTrigger: {
+                trigger: "#services",
+                start: "top 75%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "back.out(1.7)"
+        });
+
+        // Process Steps Animation
+        gsap.from(".process-step", {
+            scrollTrigger: {
+                trigger: "#process",
+                start: "top 75%",
+            },
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.2,
+            ease: "power2.out"
+        });
+
+        // Testimonials Animation
+        gsap.from(".testimonial-card", {
+            scrollTrigger: {
+                trigger: ".testimonial-card",
+                start: "top 85%",
+            },
+            x: -30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power3.out"
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
