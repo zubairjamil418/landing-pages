@@ -4,860 +4,500 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICMT | International College of Musical Theatre</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B1120', // Deep Navy/Black
+                            primary: '#0f172a', // Slate 900
+                            accent: '#2dd4bf', // Teal 400
+                            gold: '#fbbf24', // Amber 400
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'slow-zoom': 'slowZoom 20s linear infinite alternate',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slowZoom: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #FF6B35;
-            --secondary: #004E89;
-            --accent: #1A936F;
-            --bg-warm: #FAF9F6;
-            --text-dark: #1a1a1a;
-        }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-warm);
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-        
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        
-        .text-primary { color: var(--primary); }
-        .bg-primary { background-color: var(--primary); }
-        .border-primary { border-color: var(--primary); }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-        }
-        
-        .floating-shape {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-        
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        
-        .image-hover {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .image-hover:hover {
-            transform: scale(1.05);
-        }
-        
-        .btn-hover {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-hover::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-hover:hover::before {
-            left: 100%;
-        }
-        
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-        
-        .line-draw {
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 1s ease-out;
-        }
-        
-        .line-draw.active {
-            width: 100%;
-        }
-        
-        .stat-card {
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        /* Smooth scrollbar */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
-        
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #0f172a;
         }
-        
         ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 5px;
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2dd4bf;
         }
         
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-shadow {
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         
-        .mobile-menu.active {
-            transform: translateX(0);
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
-        
-        .blob {
-            position: absolute;
-            filter: blur(80px);
-            opacity: 0.4;
-            z-index: 0;
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-brand-dark text-slate-300 font-sans antialiased selection:bg-brand-accent selection:text-brand-dark">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-gray-100" id="navbar">
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">IC</div>
-                    <span class="font-display text-2xl font-bold tracking-tight">ICMT</span>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#about" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">About</a>
-                    <a href="#courses" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">Courses</a>
-                    <a href="#why-icmt" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">Why ICMT</a>
-                    <a href="#campus" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">Campus</a>
-                    <a href="#stories" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">Stories</a>
-                    <a href="#contact" class="px-6 py-2.5 bg-primary text-white font-semibold rounded-full hover:shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-0.5">Apply Now</a>
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <div class="w-10 h-10 rounded-full border-2 border-brand-accent flex items-center justify-center text-brand-accent font-bold text-xl">I</div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold text-white text-lg leading-none tracking-wider">ICMT</span>
+                        <span class="text-[0.6rem] text-slate-400 uppercase tracking-widest">Musical Theatre</span>
+                    </div>
                 </div>
 
-                <button class="md:hidden text-gray-800" onclick="toggleMenu()">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#" class="text-sm font-medium text-white hover:text-brand-accent transition-colors">Home</a>
+                    <a href="#courses" class="text-sm font-medium text-slate-300 hover:text-brand-accent transition-colors">Training</a>
+                    <a href="#about" class="text-sm font-medium text-slate-300 hover:text-brand-accent transition-colors">About</a>
+                    <a href="#faculty" class="text-sm font-medium text-slate-300 hover:text-brand-accent transition-colors">Faculty</a>
+                    <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-brand-accent transition-colors">Contact</a>
+                    <a href="#" class="px-5 py-2.5 bg-brand-accent text-brand-dark font-bold text-sm rounded-full hover:bg-white transition-all transform hover:scale-105">Apply Now</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-brand-accent focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu fixed top-0 right-0 w-full h-screen bg-white z-50 flex flex-col items-center justify-center space-y-8 md:hidden shadow-2xl" id="mobileMenu">
-            <button class="absolute top-6 right-6 text-gray-800" onclick="toggleMenu()">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="#about" class="text-2xl font-display font-medium text-gray-800" onclick="toggleMenu()">About</a>
-            <a href="#courses" class="text-2xl font-display font-medium text-gray-800" onclick="toggleMenu()">Courses</a>
-            <a href="#why-icmt" class="text-2xl font-display font-medium text-gray-800" onclick="toggleMenu()">Why ICMT</a>
-            <a href="#campus" class="text-2xl font-display font-medium text-gray-800" onclick="toggleMenu()">Campus</a>
-            <a href="#contact" class="px-8 py-3 bg-primary text-white font-bold rounded-full mt-4" onclick="toggleMenu()">Apply Now</a>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-primary border-t border-slate-800 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#" class="block px-3 py-3 text-base font-medium text-white hover:bg-slate-800 rounded-md">Home</a>
+                <a href="#courses" class="block px-3 py-3 text-base font-medium text-slate-300 hover:bg-slate-800 rounded-md">Training</a>
+                <a href="#about" class="block px-3 py-3 text-base font-medium text-slate-300 hover:bg-slate-800 rounded-md">About</a>
+                <a href="#faculty" class="block px-3 py-3 text-base font-medium text-slate-300 hover:bg-slate-800 rounded-md">Faculty</a>
+                <a href="#" class="block px-3 py-3 mt-4 text-center text-base font-bold text-brand-dark bg-brand-accent rounded-md">Apply Now</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-blue-50">
-        <!-- Background Blobs -->
-        <div class="blob bg-orange-300 w-96 h-96 rounded-full top-20 -left-20 floating-shape"></div>
-        <div class="blob bg-blue-200 w-80 h-80 rounded-full bottom-20 right-10 floating-shape" style="animation-delay: 2s;"></div>
-        <div class="blob bg-green-200 w-64 h-64 rounded-full top-1/2 left-1/3 floating-shape" style="animation-delay: 4s;"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    <div class="reveal-up">
-                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md text-primary text-sm font-semibold tracking-wide uppercase border border-orange-100">
-                            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-                            Now Accepting 2025 Applications
-                        </span>
-                    </div>
-                    
-                    <h1 class="reveal-up font-display text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight">
-                        Dream It.<br>
-                        <span class="gradient-text italic">Do It.</span><br>
-                        Live It.
-                    </h1>
-                    
-                    <p class="reveal-up text-lg text-gray-600 max-w-lg leading-relaxed">
-                        The UK's first 2-year accelerated BA (Hons) Musical Theatre degree. Train with West End professionals across London, New York, and Hamburg.
-                    </p>
-                    
-                    <div class="reveal-up flex flex-wrap gap-4">
-                        <a href="#courses" class="btn-hover px-8 py-4 bg-primary text-white font-semibold rounded-full shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all flex items-center gap-2">
-                            Explore Programs
-                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#about" class="px-8 py-4 bg-white text-gray-800 font-semibold rounded-full shadow-md hover:shadow-lg transition-all border border-gray-200 flex items-center gap-2">
-                            <i data-lucide="play-circle" class="w-5 h-5 text-primary"></i>
-                            Watch Showreel
-                        </a>
-                    </div>
-
-                    <div class="reveal-up flex items-center gap-6 pt-4">
-                        <div class="flex -space-x-3">
-                            <img src="https://picsum.photos/seed/face1/100/100" class="w-10 h-10 rounded-full border-2 border-white shadow-md" alt="Student">
-                            <img src="https://picsum.photos/seed/face2/100/100" class="w-10 h-10 rounded-full border-2 border-white shadow-md" alt="Student">
-                            <img src="https://picsum.photos/seed/face3/100/100" class="w-10 h-10 rounded-full border-2 border-white shadow-md" alt="Student">
-                            <div class="w-10 h-10 rounded-full border-2 border-white bg-primary text-white text-xs font-bold flex items-center justify-center shadow-md">+50</div>
-                        </div>
-                        <p class="text-sm text-gray-600"><span class="font-bold text-gray-900">500+</span> graduates working worldwide</p>
-                    </div>
-                </div>
-                
-                <div class="relative reveal-up">
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-orange-500/20">
-                        <img src="https://picsum.photos/seed/theatre/800/1000" alt="Musical Theatre Performance" class="w-full h-[600px] object-cover image-hover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6 glass-card rounded-2xl p-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                    <i data-lucide="trophy" class="w-6 h-6 text-primary"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-gray-900">Class of 2024</p>
-                                    <p class="text-sm text-gray-600">Graduate Showcase</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Floating Card -->
-                    <div class="absolute -bottom-6 -left-6 glass-card rounded-2xl p-4 shadow-xl hidden md:block">
-                        <div class="flex items-center gap-3">
-                            <div class="flex gap-1">
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-500"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-500"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-500"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-500"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-500"></i>
-                            </div>
-                            <span class="font-bold text-gray-900">4.9/5</span>
-                        </div>
-                        <p class="text-xs text-gray-600 mt-1">Student Satisfaction</p>
-                    </div>
-                </div>
-            </div>
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Zoom Effect -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/02b586af0d4188aa6fe9d4f20b390746438cbfef.jpg" 
+                 alt="Theatre Stage" 
+                 class="w-full h-full object-cover opacity-60 animate-slow-zoom">
         </div>
-    </section>
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/30 via-brand-dark/60 to-brand-dark z-10"></div>
 
-    <!-- Marquee -->
-    <div class="bg-primary text-white py-4 overflow-hidden">
-        <div class="marquee-container">
-            <div class="marquee-content font-display text-lg font-bold uppercase tracking-widest flex items-center gap-8">
-                <span>• Triple Threat Training</span>
-                <span>• West End Faculty</span>
-                <span>• Small Class Sizes</span>
-                <span>• Industry Ready</span>
-                <span>• Global Campuses</span>
-                <span>• Accelerated Degree</span>
-                <span>• Triple Threat Training</span>
-                <span>• West End Faculty</span>
-                <span>• Small Class Sizes</span>
-                <span>• Industry Ready</span>
-                <span>• Global Campuses</span>
-                <span>• Accelerated Degree</span>
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-16">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-brand-accent/30 bg-brand-accent/10 backdrop-blur-sm">
+                <span class="text-brand-accent text-sm font-semibold tracking-widest uppercase">Est. 2024 • London • New York • Hamburg</span>
             </div>
-        </div>
-    </div>
-
-    <!-- About Section -->
-    <section id="about" class="py-24 md:py-32 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="order-2 lg:order-1 relative">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-4 mt-8">
-                            <img src="https://picsum.photos/seed/dance/400/500" class="rounded-2xl shadow-lg w-full h-64 object-cover image-hover" alt="Dance Class">
-                            <img src="https://picsum.photos/seed/singing/400/300" class="rounded-2xl shadow-lg w-full h-48 object-cover image-hover" alt="Singing Lesson">
-                        </div>
-                        <div class="space-y-4">
-                            <img src="https://picsum.photos/seed/acting/400/300" class="rounded-2xl shadow-lg w-full h-48 object-cover image-hover" alt="Acting Workshop">
-                            <img src="https://picsum.photos/seed/performance/400/500" class="rounded-2xl shadow-lg w-full h-64 object-cover image-hover" alt="Performance">
-                        </div>
-                    </div>
-                    
-                    <!-- Experience Badge -->
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-6 text-center border-4 border-orange-100">
-                        <p class="font-display text-5xl font-bold text-primary">10+</p>
-                        <p class="text-sm font-medium text-gray-600 mt-1">Years of<br>Excellence</p>
-                    </div>
-                </div>
-                
-                <div class="order-1 lg:order-2 space-y-6">
-                    <div class="reveal-up">
-                        <span class="text-primary font-semibold text-sm tracking-widest uppercase">About ICMT</span>
-                        <h2 class="font-display text-4xl md:text-5xl font-bold mt-3 leading-tight">
-                            Welcome from the <span class="italic text-primary">Principal</span>
-                        </h2>
-                        <div class="w-24 h-1 bg-primary mt-6 rounded-full line-draw" id="line1"></div>
-                    </div>
-                    
-                    <div class="reveal-up space-y-4 text-gray-600 leading-relaxed">
-                        <p class="text-lg">
-                            The musical theatre industry is constantly evolving, and so are we. The ICMT now offers the country's first-ever 2-year, accelerated BA (Hons) Musical Theatre Performance degree in partnership with Coventry University.
-                        </p>
-                        <p>
-                            Leading industry professionals teach on all our courses—this means that you will learn the absolute latest trends in Musical Theatre. Our class sizes are small, so your growth will be big.
-                        </p>
-                        <p>
-                            We never take types. We accept individuals with drive, passion, and talent and then train them to achieve greatness.
-                        </p>
-                    </div>
-                    
-                    <div class="reveal-up pt-4">
-                        <p class="font-display text-2xl font-bold text-gray-900">Kenneth Avery-Clark</p>
-                        <p class="text-primary font-medium">Co-Founder & Principal</p>
-                    </div>
-
-                    <div class="reveal-up grid grid-cols-3 gap-6 pt-6">
-                        <div class="stat-card text-center p-4 rounded-2xl bg-white shadow-lg border border-gray-100">
-                            <p class="font-display text-3xl font-bold text-primary stat-number" data-target="3">0</p>
-                            <p class="text-xs text-gray-600 mt-1">Global Campuses</p>
-                        </div>
-                        <div class="stat-card text-center p-4 rounded-2xl bg-white shadow-lg border border-gray-100">
-                            <p class="font-display text-3xl font-bold text-primary stat-number" data-target="2">0</p>
-                            <p class="text-xs text-gray-600 mt-1">Year Degree</p>
-                        </div>
-                        <div class="stat-card text-center p-4 rounded-2xl bg-white shadow-lg border border-gray-100">
-                            <p class="font-display text-3xl font-bold text-primary stat-number" data-target="95">0</p>
-                            <p class="text-xs text-gray-600 mt-1">% Employment</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section id="courses" class="py-24 bg-white relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <span class="text-primary font-semibold text-sm tracking-widest uppercase">Our Programs</span>
-                <h2 class="font-display text-4xl md:text-6xl font-bold mt-3">Choose Your <span class="italic text-primary">Path</span></h2>
-                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Comprehensive training programs designed to launch your professional career in musical theatre.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Course 1 -->
-                <div class="group relative bg-gray-50 rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 reveal-up">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://picsum.photos/seed/degree/600/400" class="w-full h-full object-cover image-hover" alt="BA Degree">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">DEGREE</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full">2 YEARS</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors">BA (Hons) Musical Theatre</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                            The UK's first accelerated degree validated by Coventry University. Intensive triple-threat training in acting, singing, and dance.
-                        </p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-primary"></i>
-                                Validated by Coventry University
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-primary"></i>
-                                Foundation Year Available
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-primary"></i>
-                                Industry Showcase
-                            </li>
-                        </ul>
-                        <button class="w-full py-3 border-2 border-gray-200 rounded-full font-semibold text-gray-800 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 group-hover:bg-primary group-hover:text-white group-hover:border-primary">
-                            Learn More
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Course 2 -->
-                <div class="group relative bg-gray-50 rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 reveal-up" style="transition-delay: 0.1s;">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://picsum.photos/seed/professional/600/400" class="w-full h-full object-cover image-hover" alt="Professional Development">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-bold rounded-full">PROFESSIONAL</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full">1-2 YEARS</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors">Professional Development</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                            Train in London, New York, and Hamburg. Designed for those serious about a career on stage with working industry professionals.
-                        </p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-purple-500"></i>
-                                Multi-City Training
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-purple-500"></i>
-                                EU Bespoke Options
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-purple-500"></i>
-                                Broadway & West End Faculty
-                            </li>
-                        </ul>
-                        <button class="w-full py-3 border-2 border-gray-200 rounded-full font-semibold text-gray-800 hover:border-purple-500 hover:text-purple-500 transition-all flex items-center justify-center gap-2 group-hover:bg-purple-500 group-hover:text-white group-hover:border-purple-500">
-                            Learn More
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Course 3 -->
-                <div class="group relative bg-gray-50 rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 reveal-up" style="transition-delay: 0.2s;">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://picsum.photos/seed/foundation/600/400" class="w-full h-full object-cover image-hover" alt="Foundation Year">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">FOUNDATION</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full">1 YEAR</span>
-                        </div>
-                        <h3 class="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors">Foundation Year</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                            Your first step into professional training. Build the skills and confidence to progress into our accelerated BA degree.
-                        </p>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
-                                Daily Triple-Threat Training
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
-                                Pathway to BA Degree
-                            </li>
-                            <li class="flex items-center gap-3 text-sm text-gray-700">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
-                                Small Class Sizes
-                            </li>
-                        </ul>
-                        <button class="w-full py-3 border-2 border-gray-200 rounded-full font-semibold text-gray-800 hover:border-green-500 hover:text-green-500 transition-all flex items-center justify-center gap-2 group-hover:bg-green-500 group-hover:text-white group-hover:border-green-500">
-                            Learn More
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why ICMT -->
-    <section id="why-icmt" class="py-24 bg-gradient-to-b from-gray-50 to-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal-up">
-                    <span class="text-primary font-semibold text-sm tracking-widest uppercase">Why Choose Us</span>
-                    <h2 class="font-display text-4xl md:text-5xl font-bold mt-3 mb-6">Training That Puts You <span class="italic text-primary">Center Stage</span></h2>
-                    <p class="text-gray-600 text-lg mb-8">
-                        We don't just teach musical theatre—we connect you directly to the industry. Our graduates perform in West End productions, Broadway shows, and international tours.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <p class="font-display text-4xl font-bold text-primary mb-1">95%</p>
-                            <p class="text-sm text-gray-600">Employment Rate</p>
-                        </div>
-                        <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <p class="font-display text-4xl font-bold text-primary mb-1">40+</p>
-                            <p class="text-sm text-gray-600">Hours/Week</p>
-                        </div>
-                        <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <p class="font-display text-4xl font-bold text-primary mb-1">1:8</p>
-                            <p class="text-sm text-gray-600">Staff Ratio</p>
-                        </div>
-                        <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <p class="font-display text-4xl font-bold text-primary mb-1">100%</p>
-                            <p class="text-sm text-gray-600">Industry Faculty</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="space-y-6">
-                    <div class="flex gap-6 items-start p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow reveal-up">
-                        <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="users" class="w-7 h-7 text-primary"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-display text-xl font-bold mb-2">Industry Professionals Only</h3>
-                            <p class="text-gray-600">Your teachers are current performers, directors, and choreographers from the West End and Broadway.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-6 items-start p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow reveal-up" style="transition-delay: 0.1s;">
-                        <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="user-check" class="w-7 h-7 text-blue-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-display text-xl font-bold mb-2">Small Class Sizes</h3>
-                            <p class="text-gray-600">You're a name, not a number. Individual attention ensures maximum growth and development.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-6 items-start p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow reveal-up" style="transition-delay: 0.2s;">
-                        <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="globe" class="w-7 h-7 text-purple-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-display text-xl font-bold mb-2">Global Network</h3>
-                            <p class="text-gray-600">Train in London, New York, and Hamburg. Access to international casting directors and agents.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-6 items-start p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow reveal-up" style="transition-delay: 0.3s;">
-                        <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="zap" class="w-7 h-7 text-green-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-display text-xl font-bold mb-2">Accelerated Pathway</h3>
-                            <p class="text-gray-600">Complete your degree in 2 years instead of 3. Save time and money while gaining intensive training.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Campus Section -->
-    <section id="campus" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <span class="text-primary font-semibold text-sm tracking-widest uppercase">Global Campuses</span>
-                <h2 class="font-display text-4xl md:text-6xl font-bold mt-3">Train Around the <span class="italic text-primary">World</span></h2>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="group relative h-[500px] rounded-3xl overflow-hidden cursor-pointer reveal-up">
-                    <img src="https://picsum.photos/seed/london/600/800" class="w-full h-full object-cover image-hover" alt="London Campus">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full">UK</span>
-                        </div>
-                        <h3 class="font-display text-3xl font-bold text-white mb-2">London</h3>
-                        <p class="text-gray-300 text-sm mb-4">68 Wallis Road, E9 5LH</p>
-                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                            Train with West End professionals in the heart of London's theatre district.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="group relative h-[500px] rounded-3xl overflow-hidden cursor-pointer reveal-up" style="transition-delay: 0.1s;">
-                    <img src="https://picsum.photos/seed/newyork/600/800" class="w-full h-full object-cover image-hover" alt="New York Campus">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full">USA</span>
-                        </div>
-                        <h3 class="font-display text-3xl font-bold text-white mb-2">New York</h3>
-                        <p class="text-gray-300 text-sm mb-4">Manhattan Campus</p>
-                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                            Experience Broadway training in the city that never sleeps.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="group relative h-[500px] rounded-3xl overflow-hidden cursor-pointer reveal-up" style="transition-delay: 0.2s;">
-                    <img src="https://picsum.photos/seed/hamburg/600/800" class="w-full h-full object-cover image-hover" alt="Hamburg Campus">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full">GERMANY</span>
-                        </div>
-                        <h3 class="font-display text-3xl font-bold text-white mb-2">Hamburg</h3>
-                        <p class="text-gray-300 text-sm mb-4">European Campus</p>
-                        <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                            Access Europe's largest musical theatre market post-Brexit.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Success Stories -->
-    <section id="stories" class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal-up">
-                    <span class="text-primary font-semibold text-sm tracking-widest uppercase">Success Stories</span>
-                    <h2 class="font-display text-4xl md:text-5xl font-bold mt-3 mb-6">Where Our Graduates <span class="italic text-primary">Perform</span></h2>
-                    
-                    <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 relative">
-                        <i data-lucide="quote" class="w-12 h-12 text-primary/20 absolute top-6 left-6"></i>
-                        <div class="relative z-10 pt-8">
-                            <p class="font-display text-xl md:text-2xl italic leading-relaxed mb-8 text-gray-800">
-                                "It was an amazing opportunity to work with some of the industry's finest performers. Class sizes were small, which meant more 1-to-1 contact time. The tutors were incredible to work with."
-                            </p>
-                            <div class="flex items-center gap-4">
-                                <img src="https://picsum.photos/seed/alumna/100/100" class="w-14 h-14 rounded-full object-cover border-2 border-primary" alt="Alicia Mencia">
-                                <div>
-                                    <p class="font-bold text-gray-900">Alicia Mencia</p>
-                                    <p class="text-primary text-sm font-medium">ICMT Graduate</p>
-                                </div>
-                            </div>
-                            <div class="mt-6 pt-6 border-t border-gray-100">
-                                <p class="text-sm text-gray-600 font-medium">Featured in:</p>
-                                <div class="flex flex-wrap gap-2 mt-2">
-                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-700">Moulin Rouge</span>
-                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-700">Get On Your Feet</span>
-                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-700">Rocket Man</span>
-                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-700">Cabaret</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 reveal-up">
-                    <div class="space-y-4">
-                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <i data-lucide="building-2" class="w-8 h-8 text-primary mx-auto mb-3"></i>
-                            <p class="font-display text-lg font-bold">West End</p>
-                            <p class="text-sm text-gray-600">London Productions</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <i data-lucide="plane" class="w-8 h-8 text-blue-500 mx-auto mb-3"></i>
-                            <p class="font-display text-lg font-bold">International</p>
-                            <p class="text-sm text-gray-600">Global Tours</p>
-                        </div>
-                    </div>
-                    <div class="space-y-4 mt-8">
-                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <i data-lucide="theater" class="w-8 h-8 text-purple-500 mx-auto mb-3"></i>
-                            <p class="font-display text-lg font-bold">Broadway</p>
-                            <p class="text-sm text-gray-600">New York Shows</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-                            <i data-lucide="tv" class="w-8 h-8 text-green-500 mx-auto mb-3"></i>
-                            <p class="font-display text-lg font-bold">Screen</p>
-                            <p class="text-sm text-gray-600">Film & TV</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-24 bg-primary relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);"></div>
-        </div>
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal-up">
-            <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Ready to Take the Stage?</h2>
-            <p class="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
-                Applications are now open for our 2-year accelerated BA (Hons) degree and Professional Development courses. Your future in musical theatre starts here.
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight text-shadow animate-fade-in-up">
+                DREAM IT.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-emerald-400">DO IT.</span><br>
+                LIVE IT.
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+                Training the performers of tomorrow with the industry professionals of today. Join the world's leading accelerated musical theatre program.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="px-10 py-4 bg-white text-primary font-bold rounded-full shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
-                    Apply Now for 2025
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.4s;">
+                <a href="#courses" class="px-8 py-4 bg-brand-accent text-brand-dark font-bold rounded-full hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg shadow-brand-accent/20">
+                    Explore Courses
                 </a>
-                <a href="#" class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-primary transition-all">
-                    Download Prospectus
+                <a href="#" class="px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all backdrop-blur-sm">
+                    Watch Showreel <i class="fas fa-play ml-2 text-xs"></i>
                 </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <i class="fas fa-chevron-down text-white/50 text-2xl"></i>
+        </div>
+    </header>
+
+    <!-- Welcome / Principal Section -->
+    <section id="about" class="py-24 bg-brand-primary relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-brand-accent/5 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Text Content -->
+                <div class="reveal">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-6">
+                        Welcome to the <br><span class="text-brand-accent">Future</span> of Theatre
+                    </h2>
+                    <div class="w-20 h-1 bg-brand-gold mb-8"></div>
+                    <p class="text-slate-400 text-lg leading-relaxed mb-6">
+                        The musical theatre industry is constantly evolving, and so are we. The ICMT now offers the country's first-ever 2-year accelerated BA (Hons) Musical Theatre Performance degree in partnership with the prestigious Coventry University.
+                    </p>
+                    <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                        Leading industry professionals teach on all our courses—this means that you will learn the absolute latest trends in Musical Theatre, polishing your skillset daily to guide you into the industry.
+                    </p>
+                    
+                    <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm">
+                        <div class="flex items-center gap-4 mb-4">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" alt="Principal" class="w-14 h-14 rounded-full object-cover border-2 border-brand-accent">
+                            <div>
+                                <h4 class="text-white font-bold">Kenneth Avery-Clark</h4>
+                                <p class="text-brand-accent text-sm">Co-Founder & Principal</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 italic text-sm">"We accept individuals with drive, passion, and talent and then train them to achieve greatness."</p>
+                    </div>
+                </div>
+
+                <!-- Visual Content -->
+                <div class="relative reveal delay-200">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-brand-accent/10 group">
+                        <img src="https://kimi-web-img.moonshot.cn/img/pointemagazine.com/795724f20dd02e5584c0fe66635ea031d9bacef1.jpg" 
+                             alt="Students Dancing" 
+                             class="w-full h-[600px] object-cover transform transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent opacity-80"></div>
+                        
+                        <!-- Floating Stats Card -->
+                        <div class="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-xl">
+                            <div class="flex justify-between items-center text-center">
+                                <div>
+                                    <div class="text-3xl font-display font-bold text-brand-accent">98%</div>
+                                    <div class="text-xs text-slate-300 uppercase tracking-wider mt-1">Employment Rate</div>
+                                </div>
+                                <div class="w-px h-10 bg-white/20"></div>
+                                <div>
+                                    <div class="text-3xl font-display font-bold text-brand-accent">2yr</div>
+                                    <div class="text-xs text-slate-300 uppercase tracking-wider mt-1">Accelerated Degree</div>
+                                </div>
+                                <div class="w-px h-10 bg-white/20"></div>
+                                <div>
+                                    <div class="text-3xl font-display font-bold text-brand-accent">4</div>
+                                    <div class="text-xs text-slate-300 uppercase tracking-wider mt-1">Global Campuses</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative Square -->
+                    <div class="absolute -top-6 -right-6 w-24 h-24 border-t-2 border-r-2 border-brand-accent rounded-tr-3xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-24 h-24 border-b-2 border-l-2 border-brand-accent rounded-bl-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Course Highlight -->
+    <section class="py-20 bg-brand-dark border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 reveal">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="p-10 md:p-16 flex flex-col justify-center">
+                        <span class="text-brand-gold font-bold tracking-widest text-sm uppercase mb-2">Flagship Program</span>
+                        <h3 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">BA (Hons) Musical Theatre Performance</h3>
+                        <p class="text-slate-400 mb-8">Our accelerated two-year degree validated by Coventry University. Intensive, practical, and designed for the modern industry.</p>
+                        
+                        <ul class="space-y-3 mb-8 text-slate-300">
+                            <li class="flex items-center"><i class="fas fa-check text-brand-accent mr-3"></i> 1-to-1 Industry Mentorship</li>
+                            <li class="flex items-center"><i class="fas fa-check text-brand-accent mr-3"></i> Showcase in London's West End</li>
+                            <li class="flex items-center"><i class="fas fa-check text-brand-accent mr-3"></i> International Audition Tour</li>
+                        </ul>
+
+                        <div class="flex gap-4">
+                            <button class="px-6 py-3 bg-brand-accent text-brand-dark font-bold rounded-lg hover:bg-white transition-colors">
+                                Learn More
+                            </button>
+                            <button class="px-6 py-3 border border-slate-600 text-white rounded-lg hover:border-brand-accent hover:text-brand-accent transition-colors">
+                                Download Prospectus
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative h-64 md:h-auto">
+                        <img src="https://kimi-web-img.moonshot.cn/img/d26oc3sg82pgk3.cloudfront.net/0abc628c7c18980a00baa5945aec96d23335c329.jpg" 
+                             alt="Musical Theatre Actors" 
+                             class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-brand-accent/20 mix-blend-overlay"></div>
+                        <!-- Play Button Overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center group cursor-pointer">
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition-transform border border-white/50">
+                                <i class="fas fa-play text-white ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section id="courses" class="py-24 bg-brand-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Our Courses</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Explore our professional musical theatre courses, taught by current industry professionals.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Course Card 1 -->
+                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 reveal">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://kimi-web-img.moonshot.cn/img/images.stockcake.com/b348afd46caab37a0aa3cb056ed836ea33d01311.jpg" alt="Dramatic Stage" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">BA (Hons) Performance</h3>
+                        <p class="text-sm text-slate-400 mb-4 line-clamp-3">The flagship 2-year accelerated degree for those wishing to have a professional career in musical theatre.</p>
+                        <a href="#" class="inline-flex items-center text-brand-accent text-sm font-bold hover:underline">Learn More <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 reveal delay-100">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://kimi-web-img.moonshot.cn/img/www.kennedy-center.org/0469111dd03b6af0f1657bb601337a25abdf5919.jpg" alt="Dance Class" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Professional Development</h3>
+                        <p class="text-sm text-slate-400 mb-4 line-clamp-3">Train in London, New York, and Hamburg on our intensive professional development course.</p>
+                        <a href="#" class="inline-flex items-center text-brand-accent text-sm font-bold hover:underline">Learn More <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Course Card 3 -->
+                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 reveal delay-200">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://kimi-web-img.moonshot.cn/img/cdn.rit.edu/ca52606e78f2bbcd55dff30b7f6f66e70d0abd4a.jpg" alt="Performing Arts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">Foundation Diploma</h3>
+                        <p class="text-sm text-slate-400 mb-4 line-clamp-3">Level 4 Diploma designed to provide intensive practical training and develop confidence.</p>
+                        <a href="#" class="inline-flex items-center text-brand-accent text-sm font-bold hover:underline">Learn More <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Course Card 4 -->
+                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-brand-accent transition-all duration-300 hover:-translate-y-2 reveal delay-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://kimi-web-img.moonshot.cn/img/cdn.shopify.com/4825c34bf88e95479d8febc3d5e72dc725658dce.jpg" alt="Singer" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">3-Month Top-Up</h3>
+                        <p class="text-sm text-slate-400 mb-4 line-clamp-3">For those wishing to improve their skills and have a taste of what it's like to live in the greatest cities.</p>
+                        <a href="#" class="inline-flex items-center text-brand-accent text-sm font-bold hover:underline">Learn More <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Grid (Alumni, Audition, etc) -->
+    <section class="py-24 bg-brand-dark relative">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Item 1 -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:bg-slate-800 transition-colors reveal">
+                    <div class="w-12 h-12 bg-brand-accent/20 rounded-lg flex items-center justify-center text-brand-accent mb-6">
+                        <i class="fas fa-star text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-white mb-3">Alumni Success</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Check out some of our success stories. Our graduates are performing in West End, Broadway, and touring productions worldwide.</p>
+                    <a href="#" class="text-white border-b border-brand-accent pb-1 hover:text-brand-accent transition-colors">View Stories</a>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:bg-slate-800 transition-colors reveal delay-100">
+                    <div class="w-12 h-12 bg-brand-gold/20 rounded-lg flex items-center justify-center text-brand-gold mb-6">
+                        <i class="fas fa-microphone-lines text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-white mb-3">Auditions</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Everything you need to know about your audition. Dates, requirements, and how to prepare for your moment.</p>
+                    <a href="#" class="text-white border-b border-brand-gold pb-1 hover:text-brand-gold transition-colors">Book Audition</a>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:bg-slate-800 transition-colors reveal delay-200">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 mb-6">
+                        <i class="fas fa-globe text-xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-white mb-3">International</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Information for those coming from overseas. Visa support, accommodation, and settling into a new city.</p>
+                    <a href="#" class="text-white border-b border-purple-400 pb-1 hover:text-purple-400 transition-colors">Get Info</a>
+                </div>
+
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white pt-20 pb-10">
+    <footer id="contact" class="bg-black pt-20 pb-10 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-12 mb-16">
-                <div class="md:col-span-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand -->
+                <div>
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl">IC</div>
-                        <span class="font-display text-3xl font-bold">ICMT</span>
+                        <div class="w-8 h-8 rounded-full border border-brand-accent flex items-center justify-center text-brand-accent font-bold">I</div>
+                        <span class="font-display font-bold text-white text-xl">ICMT</span>
                     </div>
-                    <p class="text-gray-400 mb-6 max-w-md leading-relaxed">
-                        The International College of Musical Theatre offers world-class, practical-based musical theatre training in a positive and constructive environment across three global campuses.
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        Training the performers of tomorrow with the industry professionals of today.
                     </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all">
-                            <i data-lucide="instagram" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all">
-                            <i data-lucide="youtube" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all">
-                            <i data-lucide="facebook" class="w-5 h-5"></i>
-                        </a>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-brand-dark transition-all"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-brand-dark transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-brand-dark transition-all"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-brand-dark transition-all"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+
+                <!-- Links -->
                 <div>
-                    <h4 class="font-display text-lg font-bold mb-6">Contact</h4>
-                    <ul class="space-y-4 text-gray-400">
+                    <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">Courses</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">Faculty</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">Alumni</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">News & Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Contact</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
                         <li class="flex items-start gap-3">
-                            <i data-lucide="map-pin" class="w-5 h-5 text-primary flex-shrink-0 mt-0.5"></i>
-                            <span>68 Wallis Road<br>London, E9 5LH</span>
+                            <i class="fas fa-phone mt-1 text-brand-accent"></i>
+                            <span>+44 (0)207 253 3118</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="mail" class="w-5 h-5 text-primary flex-shrink-0"></i>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1 text-brand-accent"></i>
                             <span>info@theicmt.com</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="phone" class="w-5 h-5 text-primary flex-shrink-0"></i>
-                            <span>+44 (0)20 1234 5678</span>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-brand-accent"></i>
+                            <span>68 Wallis Road, London, E9 5LH</span>
                         </li>
                     </ul>
                 </div>
-                
+
+                <!-- Newsletter -->
                 <div>
-                    <h4 class="font-display text-lg font-bold mb-6">Quick Links</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" class="hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Auditions</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Fees & Funding</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Accommodation</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> Alumni Network</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4"></i> News & Events</a></li>
-                    </ul>
+                    <h4 class="text-white font-bold mb-6">Newsletter</h4>
+                    <p class="text-slate-500 text-sm mb-4">Subscribe for audition dates and industry tips.</p>
+                    <form class="flex flex-col gap-2" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+                        <input type="email" placeholder="Your email address" class="bg-slate-900 border border-slate-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-accent text-sm">
+                        <button type="submit" class="bg-brand-accent text-brand-dark font-bold px-4 py-2 rounded hover:bg-white transition-colors text-sm">Subscribe</button>
+                    </form>
                 </div>
             </div>
-            
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 text-sm">© 2025 International College of Musical Theatre. All rights reserved.</p>
-                <div class="flex gap-6 text-sm text-gray-500">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition-colors">Cookie Settings</a>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-600 text-xs">&copy; 2024 International College of Musical Theatre. All rights reserved.</p>
+                <div class="flex gap-6 text-xs text-slate-600">
+                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
-
         // Mobile Menu Toggle
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
-        }
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-        // Navbar scroll effect
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar Glass Effect on Scroll
+        const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
-                navbar.classList.add('shadow-md');
+                navbar.classList.add('shadow-lg');
             } else {
-                navbar.classList.remove('shadow-md');
+                navbar.classList.remove('shadow-lg');
             }
         });
-
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Reveal animations
-        gsap.utils.toArray('.reveal-up').forEach((element, i) => {
-            gsap.fromTo(element, 
-                {
-                    opacity: 0,
-                    y: 40
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    delay: element.style.transitionDelay ? parseFloat(element.style.transitionDelay) : 0
-                }
-            );
-        });
-
-        // Line draw animation
-        ScrollTrigger.create({
-            trigger: "#line1",
-            start: "top 80%",
-            onEnter: () => document.getElementById('line1').classList.add('active')
-        });
-
-        // Counter animation
-        const stats = document.querySelectorAll('.stat-number');
-        stats.forEach(stat => {
-            const target = parseInt(stat.getAttribute('data-target'));
-            gsap.to(stat, {
-                innerHTML: target,
-                duration: 2,
-                snap: { innerHTML: 1 },
-                scrollTrigger: {
-                    trigger: stat,
-                    start: "top 85%"
-                }
-            });
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: { y: target, offsetY: 80 },
-                        ease: "power3.inOut"
-                    });
-                }
-            });
-        });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
 </body>
 </html>
