@@ -112,7 +112,7 @@
   }
 
   /* party screen */
-  #screen-party{ justify-content:flex-start; padding-top:26px; }
+  #screen-party{ justify-content:flex-start; padding:16px 20px 12px; }
   .party-header{ width:100%; max-width:600px; }
   .title{
     font-size:14px;
@@ -131,14 +131,14 @@
   .subtitle{
     font-size:14.5px;
     color:var(--ink-soft);
-    margin:6px 0 16px;
+    margin:6px 0 12px;
   }
   .music-row{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
-    margin-bottom:18px;
+    margin-bottom:10px;
     flex-wrap:wrap;
   }
   .music-btn{
@@ -163,7 +163,7 @@
     position:relative;
     width:100%;
     max-width:600px;
-    height:min(58vh,420px);
+    height:min(70vh,540px);
     border-radius:20px;
     background:rgba(255,255,255,0.45);
     overflow:hidden;
@@ -260,7 +260,7 @@
 
   <!-- SCREEN 3: ANTICIPATION -->
   <div class="screen" id="screen-anticipate">
-    <div class="eyebrow-free-headline">Twenty-six looks good on you.</div>
+    <div class="eyebrow-free-headline">This year looks good on you.</div>
     <div class="sub">A year of showing up for yourself, getting a little braver, and being loved by the people around you. Here's to more of that.</div>
     <button class="cta" id="beginBtn">Let's begin</button>
   </div>
@@ -276,7 +276,7 @@
     <div class="party-header">
       <div class="title">Happy Birthday</div>
       <div class="name">Aliza</div>
-      <div class="subtitle">Tap around — every little thing here has something to say.</div>
+      <div class="subtitle">Tap the icons, or anywhere in the empty space — every part of this box has something to say.</div>
       <div class="music-row">
         <button class="music-btn" id="musicBtn">⏸ Pause music</button>
         <button class="music-btn" id="changeMusicBtn">🎵 Change music</button>
@@ -317,14 +317,14 @@
      next entry in this array (looping back to the first).
      ========================================================= */
   const TRACKS = [
-    { name: "Happy Birthday",     url: "HBD1.mp3" },
-    { name: "For Aliza",          url: "HBD3.mp3" },
-    { name: "Golden Year",        url: "HBD2.mp3" }
+    { name: "Happy Birthday",   url: "HBD1.mp3" },
+    { name: "Happy Birthday More",   url: "HBD2.mp3" },
+    { name: "Happy Birthday The Most",   url: "HBD3.mp3" }
   ];
 
   // How long a tap message stays on screen (ms). Must roughly match
   // the .msg animation duration in the CSS above (currently 3.6s).
-  const MSG_DISPLAY_MS = 2100;
+  const MSG_DISPLAY_MS = 3600;
 
   /* ---------- screen navigation ---------- */
   function goTo(id){
@@ -428,47 +428,72 @@
 
   const messages = [
     "Happy birthday, fear less always",
-    "Failure is just a lesson",
+    "Failure is just a lesson, Aliza",
     "You are stronger than doubt",
     "Believe in yourself, always",
     "Every step forward is enough",
     "Happy birthday, cherish your parents",
-    "May your parents stay blessed",
+    "Aiza May your parents stay blessed",
     "Your parents' prayers guide you",
     "Happy birthday, stay their pride",
-    "May Allah grant your Umrah",
+    "May Allah grant your Umrah Aliza",
     "Wishing you barakah this year",
     "May your duas be answered",
     "Happy birthday, stay close to faith",
-    "May Makkah welcome you soon",
+    "May Makkah welcome Aliza soon",
     "Happy birthday, chase your independence",
     "Build the life you dream",
     "Your strength inspires everyone around",
     "Happy birthday, stand tall always",
     "Independence suits you, embrace it",
-    "Keep building your own path",
+    "Keep building your own path Aliza",
     "May you reach new heights",
     "Happy birthday, explore those mountains",
     "Adventure awaits, go find it",
     "May your journeys be beautiful",
-    "Wishing you many mountain sunrises",
+    "Wishing the mountain to see you 💖 ",
     "Happy birthday, stay healthy always",
     "Wishing you strength and health",
     "Health and happiness, always yours",
     "Take care of yourself, always",
-    "Happy birthday, success awaits you"
+    "Happy birthday 💖, success awaits you"
   ];
   const colors = ['#5B3256','#C9A227','#C97B84','#8C5E75','#B98A3E','#7A6B72','#D9A5A0','#946B8C'];
+
+  // How far the message travels upward during its pop animation (must match
+  // the largest upward translateY used in the .msgPop keyframes above).
+  const MSG_TRAVEL_PX = 80;
+  const MSG_EDGE_PAD = 8;
 
   function showMsg(x,y,text){
     const m = document.createElement('div');
     m.className = 'msg';
     m.textContent = text;
-    m.style.left = x+'px';
-    m.style.top = y+'px';
     m.style.background = colors[Math.floor(Math.random()*colors.length)];
     m.style.color = 'white';
+    m.style.visibility = 'hidden';
+    m.style.left = '0px';
+    m.style.top = '0px';
     scene.appendChild(m);
+
+    // Measure the message, then clamp it so the whole box (including the
+    // room it needs to float upward into) stays inside the scene — it
+    // should never poke outside the box or get clipped/hidden by an edge.
+    const mw = m.offsetWidth;
+    const mh = m.offsetHeight;
+    const sceneW = scene.clientWidth;
+    const sceneH = scene.clientHeight;
+
+    let left = x - mw/2;
+    left = Math.max(MSG_EDGE_PAD, Math.min(left, sceneW - mw - MSG_EDGE_PAD));
+
+    let top = y - mh/2;
+    top = Math.max(MSG_EDGE_PAD + MSG_TRAVEL_PX, Math.min(top, sceneH - mh - MSG_EDGE_PAD));
+
+    m.style.left = left+'px';
+    m.style.top = top+'px';
+    m.style.visibility = 'visible';
+
     setTimeout(() => m.remove(), MSG_DISPLAY_MS);
   }
   function spawnConfetti(x,y){
