@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Happy Birthday Aliza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5EC;
+    --cream-deep:#F3E8D8;
+    --plum:#5B3256;
+    --plum-deep:#3E2140;
+    --rose:#C97B84;
+    --gold:#C9A227;
+    --ink:#3A2E33;
+    --ink-soft:#7A6B72;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Jost',sans-serif;
+    background:radial-gradient(circle at 30% 20%, var(--cream-deep) 0%, var(--cream) 55%, #EFE3EF 100%);
+    color:var(--ink);
+    min-height:100vh;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .stage{
+    position:relative;
+    width:100%;
+    height:100vh;
+    height:100dvh;
+  }
+  .screen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:32px 24px;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(14px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .screen.active{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+  }
+  .eyebrow-free-headline{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-style:italic;
+    color:var(--plum);
+    line-height:1.05;
+    letter-spacing:0.3px;
+  }
+  #screen-welcome .eyebrow-free-headline{ font-size:clamp(42px,13vw,64px); }
+  #screen-ready .eyebrow-free-headline{ font-size:clamp(36px,11vw,52px); }
+  #screen-anticipate .eyebrow-free-headline{ font-size:clamp(30px,9vw,44px); }
+
+  .sub{
+    margin-top:14px;
+    font-size:clamp(15px,4.2vw,18px);
+    color:var(--ink-soft);
+    max-width:340px;
+    line-height:1.55;
+  }
+  .glow-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--gold);
+    margin-bottom:22px;
+    box-shadow:0 0 16px 4px rgba(201,162,39,0.45);
+  }
+  .cta{
+    margin-top:34px;
+    padding:15px 38px;
+    font-family:'Jost',sans-serif;
+    font-size:15.5px;
+    font-weight:500;
+    letter-spacing:0.3px;
+    border:none;
+    border-radius:40px;
+    background:linear-gradient(90deg, var(--plum), var(--rose));
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 8px 22px rgba(91,50,86,0.28);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cta:active{ transform:scale(0.96); box-shadow:0 4px 14px rgba(91,50,86,0.25); }
+
+  /* countdown screen */
+  .count-num{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:clamp(90px,30vw,150px);
+    color:var(--gold);
+    line-height:1;
+    text-shadow:0 6px 30px rgba(201,162,39,0.35);
+  }
+  .count-caption{
+    margin-top:10px;
+    font-size:14px;
+    letter-spacing:1.5px;
+    color:var(--ink-soft);
+  }
+
+  /* party screen */
+  #screen-party{ justify-content:flex-start; padding-top:26px; }
+  .party-header{ width:100%; max-width:600px; }
+  .title{
+    font-size:14px;
+    letter-spacing:2px;
+    color:var(--ink-soft);
+    margin-bottom:2px;
+  }
+  .name{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(38px,11vw,52px);
+    color:var(--plum);
+    letter-spacing:0.5px;
+  }
+  .subtitle{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin:6px 0 16px;
+  }
+  .music-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .music-btn{
+    padding:10px 20px;
+    font-family:'Jost',sans-serif;
+    font-size:13.5px;
+    font-weight:500;
+    border:1px solid rgba(91,50,86,0.25);
+    border-radius:30px;
+    background:rgba(255,255,255,0.55);
+    color:var(--plum);
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.2s ease;
+  }
+  .music-btn:active{ transform:scale(0.95); }
+  .track-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .scene{
+    position:relative;
+    width:100%;
+    max-width:600px;
+    height:min(58vh,420px);
+    border-radius:20px;
+    background:rgba(255,255,255,0.45);
+    overflow:hidden;
+    box-shadow:0 10px 34px rgba(91,50,86,0.12);
+  }
+  .item{
+    position:absolute;
+    cursor:pointer;
+    transition:transform 0.3s ease-out;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    user-select:none;
+  }
+  .item:active{ transform:scale(0.9); }
+  .hidden{ opacity:0; pointer-events:none; transform:scale(0.5); transition:all 0.6s ease-out; }
+  .visible{ opacity:1; pointer-events:auto; transform:scale(1); }
+
+  .float{ animation:float 3s ease-in-out infinite; }
+  @keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
+  .spin{ animation:spin 4s linear infinite; }
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .pulse{ animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+  .wiggle{ animation:wiggle 1.5s ease-in-out infinite; }
+  @keyframes wiggle{ 0%,100%{transform:rotate(0deg);} 25%{transform:rotate(-10deg);} 75%{transform:rotate(10deg);} }
+
+  /* Tap messages now stay visible noticeably longer (see MSG_DISPLAY_MS in script) */
+  .msg{
+    position:absolute;
+    pointer-events:none;
+    font-size:14.5px;
+    font-weight:500;
+    padding:10px 18px;
+    border-radius:24px;
+    white-space:nowrap;
+    opacity:0;
+    transform:translateY(10px) scale(0.8);
+    animation:msgPop 3.6s forwards;
+    z-index:100;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  }
+  @keyframes msgPop{
+    0%{opacity:0; transform:translateY(10px) scale(0.8);}
+    10%{opacity:1; transform:translateY(-25px) scale(1.1);}
+    18%{transform:translateY(-35px) scale(1);}
+    82%{opacity:1; transform:translateY(-45px) scale(1);}
+    100%{opacity:0; transform:translateY(-70px) scale(0.9);}
+  }
+  .confetti{
+    position:absolute; width:9px; height:9px; border-radius:2px;
+    pointer-events:none;
+    animation:confettiFall 2s linear forwards;
+  }
+  @keyframes confettiFall{
+    0%{opacity:1; transform:translateY(0) rotate(0deg);}
+    100%{opacity:0; transform:translateY(250px) rotate(720deg);}
+  }
+  .heart-particle{ position:absolute; font-size:22px; pointer-events:none; animation:heartFloat 1.5s ease-out forwards; }
+  @keyframes heartFloat{ 0%{opacity:1; transform:translateY(0) scale(1);} 100%{opacity:0; transform:translateY(-120px) scale(1.6);} }
+  .star-particle{ position:absolute; font-size:20px; pointer-events:none; animation:starBurst 1s ease-out forwards; }
+  @keyframes starBurst{
+    0%{opacity:1; transform:translate(0,0) scale(0);}
+    50%{opacity:1; transform:translate(var(--tx), var(--ty)) scale(1.3);}
+    100%{opacity:0; transform:translate(var(--tx), var(--ty)) scale(0.5);}
+  }
+  .note-particle{ position:absolute; font-size:24px; pointer-events:none; animation:noteFly 2s ease-out forwards; }
+  @keyframes noteFly{
+    0%{opacity:1; transform:translate(0,0) rotate(0deg);}
+    100%{opacity:0; transform:translate(var(--nx), var(--ny)) rotate(360deg);}
+  }
+  .footer{ text-align:center; margin-top:14px; font-size:12.5px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- SCREEN 1: WELCOME -->
+  <div class="screen active" id="screen-welcome">
+    <div class="glow-dot"></div>
+    <div class="eyebrow-free-headline">Hi Aliza</div>
+    <div class="sub">Before anything else — happy birthday. There's a little something waiting for you here.</div>
+    <button class="cta" data-next="screen-ready">Continue</button>
+  </div>
+
+  <!-- SCREEN 2: ARE YOU READY -->
+  <div class="screen" id="screen-ready">
+    <div class="eyebrow-free-headline">Are you ready?</div>
+    <div class="sub">This next part was put together just for you. Take a breath, and go at your own pace.</div>
+    <button class="cta" data-next="screen-anticipate">I'm ready</button>
+  </div>
+
+  <!-- SCREEN 3: ANTICIPATION -->
+  <div class="screen" id="screen-anticipate">
+    <div class="eyebrow-free-headline">Twenty-six looks good on you.</div>
+    <div class="sub">A year of showing up for yourself, getting a little braver, and being loved by the people around you. Here's to more of that.</div>
+    <button class="cta" id="beginBtn">Let's begin</button>
+  </div>
+
+  <!-- SCREEN 4: COUNTDOWN -->
+  <div class="screen" id="screen-countdown">
+    <div class="count-num" id="countNum">3</div>
+    <div class="count-caption">GETTING EVERYTHING READY</div>
+  </div>
+
+  <!-- SCREEN 5: PARTY / PRESENT -->
+  <div class="screen" id="screen-party">
+    <div class="party-header">
+      <div class="title">Happy Birthday</div>
+      <div class="name">Aliza</div>
+      <div class="subtitle">Tap around — every little thing here has something to say.</div>
+      <div class="music-row">
+        <button class="music-btn" id="musicBtn">⏸ Pause music</button>
+        <button class="music-btn" id="changeMusicBtn">🎵 Change music</button>
+      </div>
+      <div class="track-label" id="trackLabel">Now playing: —</div>
+    </div>
+
+    <div class="scene" id="scene" style="margin-top:16px;">
+      <div class="item hidden" id="cake" style="left:50%;top:55%;transform:translate(-50%,-50%);width:70px;height:70px;font-size:52px;background:rgba(255,255,255,0.6);box-shadow:0 4px 20px rgba(201,123,132,0.2);">🎂</div>
+      <div class="item hidden float" id="balloon1" style="left:12%;top:18%;width:56px;height:56px;font-size:40px;background:rgba(255,255,255,0.5);">🎈</div>
+      <div class="item hidden float" id="balloon2" style="left:82%;top:12%;width:56px;height:56px;font-size:40px;background:rgba(255,255,255,0.5);animation-delay:0.5s;">🎈</div>
+      <div class="item hidden float" id="balloon3" style="left:68%;top:62%;width:56px;height:56px;font-size:40px;background:rgba(255,255,255,0.5);animation-delay:1s;">🎈</div>
+      <div class="item hidden wiggle" id="gift1" style="left:22%;top:68%;width:52px;height:52px;font-size:36px;background:rgba(255,255,255,0.5);">🎁</div>
+      <div class="item hidden wiggle" id="gift2" style="left:78%;top:48%;width:52px;height:52px;font-size:36px;background:rgba(255,255,255,0.5);animation-delay:0.7s;">🎁</div>
+      <div class="item hidden spin" id="music1" style="left:8%;top:42%;width:48px;height:48px;font-size:32px;background:rgba(255,255,255,0.5);">🎵</div>
+      <div class="item hidden spin" id="music2" style="left:90%;top:32%;width:48px;height:48px;font-size:32px;background:rgba(255,255,255,0.5);animation-delay:1.5s;">🎶</div>
+      <div class="item hidden pulse" id="sparkle1" style="left:38%;top:22%;width:44px;height:44px;font-size:32px;background:rgba(255,255,255,0.5);">✨</div>
+      <div class="item hidden pulse" id="sparkle2" style="left:58%;top:72%;width:44px;height:44px;font-size:32px;background:rgba(255,255,255,0.5);animation-delay:0.8s;">✨</div>
+      <div class="item hidden spin" id="star1" style="left:4%;top:78%;width:40px;height:40px;font-size:28px;background:rgba(255,255,255,0.5);">⭐</div>
+      <div class="item hidden spin" id="star2" style="left:94%;top:74%;width:40px;height:40px;font-size:28px;background:rgba(255,255,255,0.5);animation-delay:1s;">⭐</div>
+      <div class="item hidden float" id="heart1" style="left:33%;top:38%;width:40px;height:40px;font-size:28px;background:rgba(255,255,255,0.5);animation-delay:0.3s;">💖</div>
+      <div class="item hidden float" id="heart2" style="left:62%;top:28%;width:40px;height:40px;font-size:28px;background:rgba(255,255,255,0.5);animation-delay:0.9s;">💝</div>
+    </div>
+
+    <div class="footer">Made with care for Aliza</div>
+  </div>
+
+</div>
+
+<script>
+  /* =========================================================
+     SONG LIBRARY — edit this list to change the background music.
+     Just swap the "url" value for each track with a link to your
+     own hosted audio file (mp3/ogg/wav — anything a browser can
+     play). "name" is only used for the "Now playing:" label.
+
+     Add/remove tracks freely; "Change music" always cycles to the
+     next entry in this array (looping back to the first).
+     ========================================================= */
+  const TRACKS = [
+    { name: "Happy Birthday",     url: "HBD1.mp3" },
+    { name: "For Aliza",          url: "HBD3.mp3" },
+    { name: "Golden Year",        url: "HBD2.mp3" }
+  ];
+
+  // How long a tap message stays on screen (ms). Must roughly match
+  // the .msg animation duration in the CSS above (currently 3.6s).
+  const MSG_DISPLAY_MS = 2100;
+
+  /* ---------- screen navigation ---------- */
+  function goTo(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+  document.querySelectorAll('[data-next]').forEach(btn => {
+    btn.addEventListener('click', () => goTo(btn.getAttribute('data-next')));
+  });
+
+  document.getElementById('beginBtn').addEventListener('click', () => {
+    goTo('screen-countdown');
+    runCountdown();
+  });
+
+  function runCountdown(){
+    const el = document.getElementById('countNum');
+    const seq = ['3','2','1','🎉'];
+    let i = 0;
+    el.textContent = seq[i];
+    const timer = setInterval(() => {
+      i++;
+      if (i >= seq.length){
+        clearInterval(timer);
+        setTimeout(enterParty, 350);
+        return;
+      }
+      el.textContent = seq[i];
+    }, 700);
+  }
+
+  function enterParty(){
+    goTo('screen-party');
+    revealScene();
+    startMusic();
+  }
+
+  /* ---------- background music: single <audio> element ----------
+     Only one track ever plays at a time. Pausing pauses that one
+     track completely; changing tracks stops whatever is currently
+     playing and starts only the next track — nothing overlaps. */
+  const player = new Audio();
+  player.loop = true;
+  player.preload = "auto";
+  let trackIndex = 0;
+
+  const musicBtn = document.getElementById('musicBtn');
+  const changeMusicBtn = document.getElementById('changeMusicBtn');
+  const trackLabel = document.getElementById('trackLabel');
+
+  function loadAndPlay(index){
+    trackIndex = ((index % TRACKS.length) + TRACKS.length) % TRACKS.length;
+    player.pause();
+    player.currentTime = 0;
+    player.src = TRACKS[trackIndex].url;
+    trackLabel.textContent = 'Now playing: ' + TRACKS[trackIndex].name;
+    player.play().catch(() => {
+      // Autoplay can be blocked until the user interacts; the Pause/Play
+      // button will still work once they tap it.
+    });
+    musicBtn.textContent = '⏸ Pause music';
+  }
+
+  function startMusic(){
+    loadAndPlay(0);
+  }
+
+  musicBtn.addEventListener('click', () => {
+    if (player.paused){
+      player.play().catch(() => {});
+      musicBtn.textContent = '⏸ Pause music';
+    } else {
+      player.pause();
+      musicBtn.textContent = '▶ Play music';
+    }
+  });
+
+  changeMusicBtn.addEventListener('click', () => {
+    loadAndPlay(trackIndex + 1);
+  });
+
+  /* ---------- short tap "pop" sound effect (not the background music) ---------- */
+  let fxAudioCtx = null;
+  function popSound(){
+    if (!fxAudioCtx) fxAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = fxAudioCtx.createOscillator();
+    const gain = fxAudioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(fxAudioCtx.destination);
+    osc.type = 'triangle';
+    osc.frequency.value = 500 + Math.random()*500;
+    gain.gain.setValueAtTime(0.06, fxAudioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, fxAudioCtx.currentTime + 0.12);
+    osc.start();
+    osc.stop(fxAudioCtx.currentTime + 0.12);
+  }
+
+  /* ---------- interactive scene ---------- */
+  const scene = document.getElementById('scene');
+  let clickCount = 0;
+
+  const messages = [
+    "Happy birthday, fear less always",
+    "Failure is just a lesson",
+    "You are stronger than doubt",
+    "Believe in yourself, always",
+    "Every step forward is enough",
+    "Happy birthday, cherish your parents",
+    "May your parents stay blessed",
+    "Your parents' prayers guide you",
+    "Happy birthday, stay their pride",
+    "May Allah grant your Umrah",
+    "Wishing you barakah this year",
+    "May your duas be answered",
+    "Happy birthday, stay close to faith",
+    "May Makkah welcome you soon",
+    "Happy birthday, chase your independence",
+    "Build the life you dream",
+    "Your strength inspires everyone around",
+    "Happy birthday, stand tall always",
+    "Independence suits you, embrace it",
+    "Keep building your own path",
+    "May you reach new heights",
+    "Happy birthday, explore those mountains",
+    "Adventure awaits, go find it",
+    "May your journeys be beautiful",
+    "Wishing you many mountain sunrises",
+    "Happy birthday, stay healthy always",
+    "Wishing you strength and health",
+    "Health and happiness, always yours",
+    "Take care of yourself, always",
+    "Happy birthday, success awaits you"
+  ];
+  const colors = ['#5B3256','#C9A227','#C97B84','#8C5E75','#B98A3E','#7A6B72','#D9A5A0','#946B8C'];
+
+  function showMsg(x,y,text){
+    const m = document.createElement('div');
+    m.className = 'msg';
+    m.textContent = text;
+    m.style.left = x+'px';
+    m.style.top = y+'px';
+    m.style.background = colors[Math.floor(Math.random()*colors.length)];
+    m.style.color = 'white';
+    scene.appendChild(m);
+    setTimeout(() => m.remove(), MSG_DISPLAY_MS);
+  }
+  function spawnConfetti(x,y){
+    for(let i=0;i<14;i++){
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = x+'px';
+      c.style.top = y+'px';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      scene.appendChild(c);
+      setTimeout(() => c.remove(), 2000);
+    }
+  }
+  function spawnHearts(x,y){
+    const emojis = ['💖','💕','💗','💝','💘'];
+    for(let i=0;i<6;i++){
+      const h = document.createElement('div');
+      h.className = 'heart-particle';
+      h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left = (x+(Math.random()-0.5)*70)+'px';
+      h.style.top = (y+(Math.random()-0.5)*40)+'px';
+      scene.appendChild(h);
+      setTimeout(() => h.remove(), 1500);
+    }
+  }
+  function spawnStars(x,y){
+    for(let i=0;i<8;i++){
+      const s = document.createElement('div');
+      s.className = 'star-particle';
+      s.textContent = '⭐';
+      s.style.left = x+'px';
+      s.style.top = y+'px';
+      const a = (Math.PI*2*i)/8;
+      s.style.setProperty('--tx', Math.cos(a)*60+'px');
+      s.style.setProperty('--ty', Math.sin(a)*60+'px');
+      scene.appendChild(s);
+      setTimeout(() => s.remove(), 1000);
+    }
+  }
+  function spawnNotes(x,y){
+    const emojis = ['🎵','🎶','♪','♫'];
+    for(let i=0;i<5;i++){
+      const n = document.createElement('div');
+      n.className = 'note-particle';
+      n.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      n.style.left = x+'px';
+      n.style.top = y+'px';
+      n.style.setProperty('--nx', (Math.random()-0.5)*100+'px');
+      n.style.setProperty('--ny', -80-Math.random()*80+'px');
+      scene.appendChild(n);
+      setTimeout(() => n.remove(), 2000);
+    }
+  }
+
+  scene.addEventListener('click', (e) => {
+    const r = scene.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    clickCount++;
+    showMsg(x,y,messages[clickCount % messages.length]);
+    spawnConfetti(x,y);
+    if (clickCount % 3 === 0) spawnHearts(x,y);
+    if (clickCount % 4 === 0) spawnStars(x,y);
+    if (clickCount % 5 === 0) spawnNotes(x,y);
+    popSound();
+  });
+
+  const itemEffects = {
+    cake: () => ({text:"Make a wish, Aliza", hearts:true, confetti:true}),
+    balloon1: () => ({text:"Up, up and away", stars:true}),
+    balloon2: () => ({text:"Floating on cloud nine", stars:true}),
+    balloon3: () => ({text:"Soaring high today", stars:true}),
+    gift1: () => ({text:"A little surprise for you", confetti:true, stars:true}),
+    gift2: () => ({text:"This one's for you too", confetti:true, stars:true}),
+    music1: () => ({text:"La la la", notes:true}),
+    music2: () => ({text:"Dance to the beat", notes:true}),
+    sparkle1: () => ({text:"You sparkle, Aliza", stars:true, hearts:true}),
+    sparkle2: () => ({text:"Shine bright, always", stars:true, hearts:true}),
+    star1: () => ({text:"You're a star, Aliza", stars:true}),
+    star2: () => ({text:"A true superstar", stars:true}),
+    heart1: () => ({text:"You are valued, Aliza", hearts:true, hearts2:true}),
+    heart2: () => ({text:"Stay blessed, always", hearts:true, hearts2:true})
+  };
+
+  Object.keys(itemEffects).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const r = scene.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const fx = itemEffects[id]();
+      showMsg(x,y,fx.text);
+      if (fx.confetti) spawnConfetti(x,y);
+      if (fx.hearts) spawnHearts(x,y);
+      if (fx.hearts2) spawnHearts(x,y);
+      if (fx.stars) spawnStars(x,y);
+      if (fx.notes) spawnNotes(x,y);
+      popSound();
+    });
+  });
+
+  function revealScene(){
+    document.querySelectorAll('#scene .hidden').forEach((item,i) => {
+      setTimeout(() => { item.classList.remove('hidden'); item.classList.add('visible'); }, i*120);
+    });
+    setTimeout(() => {
+      for(let i=0;i<25;i++){
+        setTimeout(() => spawnConfetti(60+Math.random()*480, 60+Math.random()*280), i*80);
+      }
+    }, 600);
+  }
+</script>
+</body>
+</html>
